@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <!-- Badge and Level Section -->
+        <div class="card shadow mb-4">
+            <div class="card-body text-center">
+                <div class="badge-container">
+                    <h1 class="display-4 mb-3">{{ badge_info.title }}</h1>
+                    <div class="level-badge">Level: {{ badge_info.level }}</div>
+                    <p class="lead">{{ badge_info.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Emissions Overview -->
+            <div class="col-md-8">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Your Carbon Footprint Impact</h3>
+                        
+                        <!-- Visual Impact Summary -->
+                        <div class="impact-summary mb-4">
+                            <h4>Total: {{ "%.1f"|format(emissions.total) }} metric tons CO₂/year</h4>
+                            <div class="impact-equivalents">
+                                <p class="lead">Your annual emissions are equivalent to:</p>
+                                <div class="row text-center">
+                                    <div class="col-md-3">
+                                        <i class="fas fa-car fa-2x mb-2"></i>
+                                        <p><strong>{{ "%.1f"|format(emissions.total * 2.5) }}k</strong><br>miles driven</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="fas fa-tree fa-2x mb-2"></i>
+                                        <p><strong>{{ trees_needed }}</strong><br>trees needed</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="fas fa-lightbulb fa-2x mb-2"></i>
+                                        <p><strong>{{ "%.0f"|format(emissions.total * 120) }}</strong><br>LED bulbs/year</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="fas fa-home fa-2x mb-2"></i>
+                                        <p><strong>{{ "%.1f"|format(emissions.total * 0.12) }}</strong><br>homes/year</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emissions Chart -->
+                        <div class="emissions-chart mb-4">
+                            <h5>Breakdown by Category</h5>
+                            <div id="emissionsDonut"></div>
+                        </div>
+
+                        <!-- Category Details -->
+                        <div class="category-details">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="category-card transport">
+                                        <h6><i class="fas fa-car-side"></i> Transportation</h6>
+                                        <p class="number">{{ "%.1f"|format(emissions.transportation) }} tons</p>
+                                        <small>Equal to {{ "%.1f"|format(emissions.transportation * 2.5) }}k miles of driving</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="category-card home">
+                                        <h6><i class="fas fa-home"></i> Household</h6>
+                                        <p class="number">{{ "%.1f"|format(emissions.household) }} tons</p>
+                                        <small>Powers {{ "%.0f"|format(emissions.household * 120) }} LED bulbs for a year</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="category-card food">
+                                        <h6><i class="fas fa-utensils"></i> Food</h6>
+                                        <p class="number">{{ "%.1f"|format(emissions.food) }} tons</p>
+                                        <small>Like {{ "%.0f"|format(emissions.food * 220) }} beef burgers</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="category-card waste">
+                                        <h6><i class="fas fa-trash"></i> Waste</h6>
+                                        <p class="number">{{ "%.1f"|format(emissions.waste) }} tons</p>
+                                        <small>Equal to {{ "%.0f"|format(emissions.waste * 100) }} bags of unrecycled waste</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="col-md-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Achievements</h3>
+                        <div class="achievements-list">
+                            {% for achievement in achievements.achievements %}
+                            <div class="achievement-item">
+                                <span class="achievement-icon">{{ achievement.icon }}</span>
+                                <h5>{{ achievement.title }}</h5>
+                                <p>{{ achievement.description }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Chart -->
+        <div class="card shadow mt-4">
+            <div class="card-body">
+                <div id="comparisonChart"></div>
+            </div>
+        </div>
+
+        <!-- AI Suggestions -->
+        <div class="card shadow mt-4">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <i class="fas fa-lightbulb text-warning"></i>
+                    AI-Powered Suggestions
+                </h3>
+                <div class="suggestions-container">
+                    {% for suggestion in suggestions %}
+                    <div class="suggestion-card">
+                        <div class="suggestion-content">
+                            <i class="fas fa-leaf text-success"></i>
+                            <p>{{ suggestion }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-4 mb-5">
+            <a href="/" class="btn btn-lg btn-success me-3">
+                <i class="fas fa-calculator me-2"></i>Calculate Again
+            </a>
+            <button class="btn btn-lg btn-outline-success" onclick="window.print()">
+                <i class="fas fa-download me-2"></i>Save Report
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Parse the JSON data from Flask
+    const emissionsChart = JSON.parse('{{ emissions_chart|safe }}');
+    const comparisonChart = JSON.parse('{{ comparison_chart|safe }}');
+
+    // Create the charts
+    Plotly.newPlot('emissionsDonut', emissionsChart.data, emissionsChart.layout, {responsive: true});
+    Plotly.newPlot('comparisonChart', comparisonChart.data, comparisonChart.layout, {responsive: true});
+
+    // Make charts responsive
+    window.addEventListener('resize', function() {
+        Plotly.Plots.resize('emissionsDonut');
+        Plotly.Plots.resize('comparisonChart');
+    });
+});
+</script>
+{% endblock %}

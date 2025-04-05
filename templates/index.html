@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Calculate Your Carbon Footprint</h2>
+                <form id="carbonForm" method="POST">
+                    {{ form.csrf_token }}
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress mb-4" style="height: 20px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Form Sections -->
+                    <div class="form-sections">
+                        <!-- Basic Info Section -->
+                        <section class="form-section active" data-section="1">
+                            <h3 class="section-title">Basic Information</h3>
+                            <div class="mb-3">
+                                {{ form.name.label(class="form-label") }}
+                                {{ form.name(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.age.label(class="form-label") }}
+                                {{ form.age(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control") }}
+                            </div>
+                        </section>
+
+                        <!-- Household Energy Section -->
+                        <section class="form-section" data-section="2">
+                            <h3 class="section-title">Household Energy Usage</h3>
+                            <div class="mb-3">
+                                {{ form.household_members.label(class="form-label") }}
+                                {{ form.household_members(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.monthly_electricity.label(class="form-label") }}
+                                {{ form.monthly_electricity(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.renewable_energy.label(class="form-label") }}
+                                {{ form.renewable_energy(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.cooking_fuel.label(class="form-label") }}
+                                {{ form.cooking_fuel(class="form-select") }}
+                            </div>
+                        </section>
+
+                        <!-- Transportation Section -->
+                        <section class="form-section" data-section="3">
+                            <h3 class="section-title">Transportation</h3>
+                            <div class="mb-3">
+                                {{ form.transport_mode.label(class="form-label") }}
+                                {{ form.transport_mode(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.vehicle_fuel.label(class="form-label") }}
+                                {{ form.vehicle_fuel(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.daily_travel.label(class="form-label") }}
+                                {{ form.daily_travel(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.domestic_flights.label(class="form-label") }}
+                                {{ form.domestic_flights(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.international_flights.label(class="form-label") }}
+                                {{ form.international_flights(class="form-control") }}
+                            </div>
+                        </section>
+
+                        <!-- Food & Diet Section -->
+                        <section class="form-section" data-section="4">
+                            <h3 class="section-title">Food & Diet</h3>
+                            <div class="mb-3">
+                                {{ form.diet_type.label(class="form-label") }}
+                                {{ form.diet_type(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.red_meat.label(class="form-label") }}
+                                {{ form.red_meat(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.dairy.label(class="form-label") }}
+                                {{ form.dairy(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.food_waste.label(class="form-label") }}
+                                {{ form.food_waste(class="form-select") }}
+                            </div>
+                        </section>
+
+                        <!-- Waste & Recycling Section -->
+                        <section class="form-section" data-section="5">
+                            <h3 class="section-title">Waste & Recycling</h3>
+                            <div class="mb-3">
+                                {{ form.waste_segregation.label(class="form-label") }}
+                                {{ form.waste_segregation(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.recycling.label(class="form-label") }}
+                                {{ form.recycling(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.weekly_waste.label(class="form-label") }}
+                                {{ form.weekly_waste(class="form-select") }}
+                            </div>
+                        </section>
+
+                        <!-- Shopping & Lifestyle Section -->
+                        <section class="form-section" data-section="6">
+                            <h3 class="section-title">Shopping & Lifestyle</h3>
+                            <div class="mb-3">
+                                {{ form.yearly_clothes.label(class="form-label") }}
+                                {{ form.yearly_clothes(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.electronics.label(class="form-label") }}
+                                {{ form.electronics(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.online_shopping.label(class="form-label") }}
+                                {{ form.online_shopping(class="form-select") }}
+                            </div>
+                        </section>
+
+                        <!-- Living Environment Section -->
+                        <section class="form-section" data-section="7">
+                            <h3 class="section-title">Living Environment & Green Practices</h3>
+                            <div class="mb-3">
+                                {{ form.ac_usage.label(class="form-label") }}
+                                {{ form.ac_usage(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.home_type.label(class="form-label") }}
+                                {{ form.home_type(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.water_usage.label(class="form-label") }}
+                                {{ form.water_usage(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.green_programs.label(class="form-label") }}
+                                {{ form.green_programs(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.pets.label(class="form-label") }}
+                                {{ form.pets(class="form-select") }}
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-secondary prev-section" style="display: none;">Previous</button>
+                        <button type="button" class="btn btn-success next-section">Next</button>
+                        <button type="submit" class="btn btn-primary submit-form" style="display: none;">Calculate Footprint</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let currentSection = 1;
+    const totalSections = $('.form-section').length;
+    
+    function updateProgress() {
+        const progress = ((currentSection - 1) / totalSections) * 100;
+        $('.progress-bar').css('width', progress + '%');
+    }
+
+    function showSection(sectionNumber) {
+        $('.form-section').removeClass('active').hide();
+        $(`[data-section="${sectionNumber}"]`).addClass('active').show();
+        
+        // Update buttons
+        $('.prev-section').toggle(sectionNumber > 1);
+        if (sectionNumber === totalSections) {
+            $('.next-section').hide();
+            $('.submit-form').show();
+        } else {
+            $('.next-section').show();
+            $('.submit-form').hide();
+        }
+        
+        updateProgress();
+    }
+
+    $('.next-section').click(function() {
+        if (currentSection < totalSections) {
+            currentSection++;
+            showSection(currentSection);
+        }
+    });
+
+    $('.prev-section').click(function() {
+        if (currentSection > 1) {
+            currentSection--;
+            showSection(currentSection);
+        }
+    });
+
+    // Initialize first section
+    showSection(1);
+
+    // Handle form submission
+    $('#carbonForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success && response.redirect) {
+                    window.location.href = response.redirect;
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
